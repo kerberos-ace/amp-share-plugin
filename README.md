@@ -1,2 +1,2 @@
 # amp-share-plugin
-Share plugin for azure media player
+Social share plugin for azure media player
