@@ -26,23 +26,25 @@
         </video>
     </section>
     <footer>
-        <p>@Internity Foundation</p>
+        <p>
+        <a href="http://internity.in/" target="_blank">@Internity Foundation</a></p>
     </footer>
 
     <script>
-        function addSharePlugin() {
+
+        $(function () {
+        function addSharePluginConfig() {
             var shareOption = {};
             var socialShareIcons = [];
-            socialShareIcons.push(0 /* Facebook */);
-            socialShareIcons.push(1 /* Twitter */);
-            socialShareIcons.push(2 /* LinkedIn */);
-            socialShareIcons.push(3 /* Mail */);
+            socialShareIcons.push(0);/* Facebook */
+            socialShareIcons.push(1);/* Twitter */
+            socialShareIcons.push(2);/* LinkedIn */
+            socialShareIcons.push(3);/* Mail */
             shareOption.socialShareIcons = socialShareIcons;
             shareOption.playerBaseUrl = "www.playerbaseurl.com";
             return shareOption;
         }
-     
-      
+
         var myOptions = {
             autoplay: true,
             controls: true,
@@ -50,13 +52,14 @@
             height: "400",
             poster: "",
             plugins: {
-                share: addSharePlugin()
+                share: addSharePluginConfig()
             }
         };
+
         var myPlayer = amp("azuremediaplayer", myOptions);
         myPlayer.src([{ src: "//amssamples.streaming.mediaservices.windows.net/91492735-c523-432b-ba01-faba6c2206a2/AzureMediaServicesPromo.ism/manifest", type: "application/vnd.ms-sstr+xml" }, ]);
     
-       
+        });
     </script>
 </body>
 </html>

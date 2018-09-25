@@ -8,8 +8,8 @@
         var embedLinksContainerClassName = "vjs-shareoptions-embedOption";
         var copyConfirmPopupContainerClassName = "vjs-sharePanel-CopyConfirmPopupContainer";
         var myPlayer = this;
+
         myPlayer.addEventListener(amp.eventName.loadedmetadata, function () {
-            debugger;
             initializeShare();
             initializeSharePopup(options);
         });
@@ -34,8 +34,6 @@
             var custSharePanel = "<div class='vjs-sharepanel vjs-hidden'><div class=\"vjs-sharepanel-controls\">\n\t<div class=\"vjs-sharepanel-header\">\n\t\t<div class=\"vjs-sharepanel-close\">\n\t\t\t<a>\n\t\t\t\t<span class=\"vjs-sharepanel-close-image cursor-pointer\"/>\n\t\t\t\t<span class=\"screen-reader-text\">close</span>\n\t\t\t</a>\n\t\t</div>\n\t</div>\n\t<div class=\"vjs-shareoptions\">\n\t\t<div class=\"vjs-shareoptions-social\">\n\t\t\t<label>Share</label>\n\t\t\t<hr/>\n\t\t\t<div class=\"" + socialIconsContainerClassName + "\">" + socialIconsHtml + "</div>\n\t\t</div>\n\t\t<div class=\"vjs-sharepanel-bottom\">\n\t\t\t<div class=\"" + linkContainerClassName + "\">\n\t\t\t\t<label class=\"vjs-label\">Links</label>\n\t\t\t\t<hr/>\n\t\t\t\t<button data-ai='true'  data-eleregion='Player' data-catagory='Copy url' id='openCopyConfirmPopup' title='Copy URL' >Copy Url</button>\n\n\t\t\t</div>\n\t\t\t<div class=\"" + embedShareContainerClassName + " " + vjsHiddenClassName + "\">\n\t\t\t\t<label>copy</label>\n\t\t\t\t<hr/>\n\t\t\t\t<div class=\"" + embedLinksContainerClassName + "\"></div>\n\t\t\t\t<button>local</button>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n    <div class=\"" + copyConfirmPopupContainerClassName + " " + vjsHiddenClassName + "\">\n        <a href=\"javascript:void()\">\n\t\t\t<span class=\"vjs-sharePopup-Closeimage\"/>\n\t\t\t<span class=\"screen-reader-text\">cs</span>\n        </a>\n\t\t<label></label>\n        <textarea>Error occur when try to copy content</textarea>\n\t\t<button class='copylinksToClipboard'>Copy Video Url</button>\n\t\t <textarea id='txtVideoLocation'>Error occur when try to copy content</textarea>\n\t\t<button class='copylinksToClipboard'>Copy Video Location</button>\n    </div>\n</div></div>";
             var rightControlsContainer = document.getElementsByClassName("azuremediaplayer")[0];
             appendHtml(rightControlsContainer, custSharePanel);
-
-
         }
 
         var appendHtml = function (el, str) {
@@ -123,11 +121,9 @@
             return returnValue;
         };
 
-
         var renderSocialIconHtml = function (rtValue) {
             return '<div class="vjs-share-socialIcon"> <a target="_blank" href="' + rtValue.url + '"><img src="' + rtValue.iconUrl + '" class="shareicononsharepanel" data-ai="true" data-eleregion="Player" data-catagory="share icon" title="share with"></a></div>';
         }
-
 
         var getCurrentPageUrl = function (options) {
             var qs = (function (a) {
@@ -142,7 +138,6 @@
                 }
                 return b;
             });
-
 
             var parentUrl = window.location.href.split("?")[0];
             var videoid = qs(document.location.search.substr(1).split('&'))["id"];
@@ -170,7 +165,7 @@
                 catch (err) {
                     console.log('error in copying');
                 }
-                ;
+
             };
             return ClipBoardHelper;
         })();
