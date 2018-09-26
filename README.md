@@ -1,6 +1,6 @@
 ---
 services: media-services
-platforms: javascript
+platforms: jquery
 author: Anshul Dhiman
 ---
 # Media Services: Share Plugin for Azure Media Player
