@@ -11,8 +11,9 @@
 }
 
 .amp-default-skin .vjs-sharepanel button {
-    cursor:pointer
+    cursor: pointer
 }
+
 .amp-default-skin .vjs-sharepanel {
     background-color: rgba(0,0,0,0.7) !important;
     width: 100%;
@@ -98,7 +99,7 @@
     color: #FFFFFF;
     padding: 0px;
     margin-bottom: 10px;
-    padding:5px;
+    padding: 5px;
 }
 
 .amp-default-skin .vjs-shareoptions-link {
@@ -121,38 +122,18 @@
     float: left;
 }
 
-.amp-copy-toast {
-    width: 100px;
-    height: 20px;
-    height: auto;
-    position: absolute;
-    left: 50%;
-    margin-left: -100px;
-    bottom: 10px;
-    background-color: #383838;
-    color: #F0F0F0;
-    font-family: Calibri;
-    font-size: 20px;
-    padding: 10px;
-    text-align: center;
-    border-radius: 2px;
-    -webkit-box-shadow: 0px 0px 24px -1px rgba(56, 56, 56, 1);
-    -moz-box-shadow: 0px 0px 24px -1px rgba(56, 56, 56, 1);
-    box-shadow: 0px 0px 24px -1px rgba(56, 56, 56, 1);
-}
+    .amp-default-skin .vjs-shareoptions-embedOption label {
+        font-size: 1.7em;
+        vertical-align: middle;
+        display: inline;
+    }
 
-.amp-default-skin .vjs-shareoptions-embedOption label {
-    font-size: 1.7em;
-    vertical-align: middle;
-    display: inline;
-}
-
-.amp-default-skin .vjs-shareoptions-embedOption input {
-    vertical-align: middle;
-    margin-right: 9px;
-    -webkit-appearance: radio;
-    -webkit-border-radius: 0;
-}
+    .amp-default-skin .vjs-shareoptions-embedOption input {
+        vertical-align: middle;
+        margin-right: 9px;
+        -webkit-appearance: radio;
+        -webkit-border-radius: 0;
+    }
 
 .amp-default-skin .vjs-sharePanel-CopyConfirmPopupContainer {
     position: absolute;
@@ -203,13 +184,44 @@
 
 /* End CSS for amp-share plugin */
 
-@media only screen and (max-width : 560px) {
 
-    .amp-default-skin .vjs-shareoptions-social {
-        margin-bottom: 5%;
-    }
-
-    .amp-default-skin .vjs-sharepanel div {
-        font-size: 7.5px;
-    }
+/* Alert box start */
+.alert {
+    margin: 0 auto;
+    overflow: auto;
+    position: absolute;
+    float: right;
+    overflow-x: hidden;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    border-radius: 2px;
+    font-size: 15px !important;
 }
+
+/* The close button */
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.success {
+    background-color: #3176BB;
+}
+
+.danger {
+    background-color: red;
+}
+/* When moving the mouse over the close button */
+.closebtn:hover {
+    color: black;
+}
+
+
+/* Alert box end */

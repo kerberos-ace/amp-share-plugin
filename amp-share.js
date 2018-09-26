@@ -1,12 +1,11 @@
 (function () {
     amp.plugin('share', function (options) {
+        var htmltemplates = {
+            alertmsg: '<div class="alert {{type}}" id="divalert"><span class="closebtn" onclick= "this.parentElement.style.display=\'none\';">&times;</span >{{msg}}</div >',
+            socialiconhtml: '<div class="vjs-share-socialIcon"> <a target="_blank" href="{{Url}}"><img src="{{IconUrl}}" class="shareicononsharepanel" data-ai="true" data-eleregion="Player" data-catagory="share icon" title="share with"></a></div>',
+            sharepanelcust: '<div class="vjs-sharepanel vjs-hidden"><div class="vjs-sharepanel-controls">\n\t<div class=\"vjs-sharepanel-header\">\n\t\t<div class=\"vjs-sharepanel-close\">\n\t\t\t\n\t\t\t\t<a tabindex="0" class=\"vjs-sharepanel-close-image cursor-pointer\"/>\n\t\t\t\t<span class=\"screen-reader-text\">close</a>\n\t\t\t</a>\n\t\t</div>\n\t</div>\n\t<div class=\"vjs-shareoptions\">\n\t\t<div class=\"vjs-shareoptions-social\">\n\t\t\t<label>Share</label>\n\t\t\t<hr/>\n\t\t\t<div class="vjs-shareoptions-socialIcons">{{socialIconsHtml}}</div>\n\t\t</div>\n\t\t<div class=\"vjs-sharepanel-bottom\">\n\t\t\t<div class="vjs-shareoptions-link" >\n\t\t\t\t<label class=\"vjs-label\">Links</label>\n\t\t\t\t<hr/>\n\t\t\t\t<button data-ai="true"   id="openCopyConfirmPopup" title="Copy URL" >Copy Url</button>\n\n\t\t\t</div>\n\t\t\t<div class="vjs-shareoptions-embed vjs-hidden" >\n\t\t\t\t<label>copy</label>\n\t\t\t\t<hr/>\n\t\t\t\t<div class="vjs-shareoptions-embedOption"></div>\n\t\t\t\t<button>local</button>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n  <div class="vjs-sharePanel-CopyConfirmPopupContainer vjs-hidden">\n<a tabindex="0" class="vjs-sharePopup-Closeimage" href=\"javascript:void()\"></a>\n\t\t<label></label>\n        <textarea>Error occur when try to copy content</textarea>\n\t\t<button class="copylinksToClipboard">Copy Video Url</button>\n\t\t <textarea id="txtVideoLocation">Error occur when try to copy content</textarea>\n\t\t<button class="copylinksToClipboard">Copy Video Location</button>\n</div>\n</div></div>'
+        }
 
-        var socialIconsContainerClassName = "vjs-shareoptions-socialIcons";
-        var vjsHiddenClassName = "vjs-hidden";
-        var linkContainerClassName = "vjs-shareoptions-link";
-        var embedShareContainerClassName = "vjs-shareoptions-embed";
-        var embedLinksContainerClassName = "vjs-shareoptions-embedOption";
-        var copyConfirmPopupContainerClassName = "vjs-sharePanel-CopyConfirmPopupContainer";
         var myPlayer = this;
 
         myPlayer.addEventListener(amp.eventName.loadedmetadata, function () {
@@ -24,14 +23,21 @@
             shareButton.setAttribute("title", "Social Share");
             parentTag.prepend(shareButton);
             parentTag.on('click', shareButton, bindClick);
+            parentTag.on('keydown', shareButton, bindKeydown);
         }
 
         var initializeSharePopup = function (options) {
-            var socialIconsHtml = '';
+            var socialIconsHtml;
             options.socialShareIcons.forEach(function (element) {
-                socialIconsHtml = socialIconsHtml + renderSocialIconHtml(getPredefinedShareIcon(element, options));
+                if (socialIconsHtml !== undefined)
+                    socialIconsHtml = socialIconsHtml + renderSocialIconHtml(getPredefinedShareIcon(element, options));
+                else
+                    socialIconsHtml = renderSocialIconHtml(getPredefinedShareIcon(element, options));
             });
-            var custSharePanel = "<div class='vjs-sharepanel vjs-hidden'><div class=\"vjs-sharepanel-controls\">\n\t<div class=\"vjs-sharepanel-header\">\n\t\t<div class=\"vjs-sharepanel-close\">\n\t\t\t<a>\n\t\t\t\t<span class=\"vjs-sharepanel-close-image cursor-pointer\"/>\n\t\t\t\t<span class=\"screen-reader-text\">close</span>\n\t\t\t</a>\n\t\t</div>\n\t</div>\n\t<div class=\"vjs-shareoptions\">\n\t\t<div class=\"vjs-shareoptions-social\">\n\t\t\t<label>Share</label>\n\t\t\t<hr/>\n\t\t\t<div class=\"" + socialIconsContainerClassName + "\">" + socialIconsHtml + "</div>\n\t\t</div>\n\t\t<div class=\"vjs-sharepanel-bottom\">\n\t\t\t<div class=\"" + linkContainerClassName + "\">\n\t\t\t\t<label class=\"vjs-label\">Links</label>\n\t\t\t\t<hr/>\n\t\t\t\t<button data-ai='true'  data-eleregion='Player' data-catagory='Copy url' id='openCopyConfirmPopup' title='Copy URL' >Copy Url</button>\n\n\t\t\t</div>\n\t\t\t<div class=\"" + embedShareContainerClassName + " " + vjsHiddenClassName + "\">\n\t\t\t\t<label>copy</label>\n\t\t\t\t<hr/>\n\t\t\t\t<div class=\"" + embedLinksContainerClassName + "\"></div>\n\t\t\t\t<button>local</button>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n    <div class=\"" + copyConfirmPopupContainerClassName + " " + vjsHiddenClassName + "\">\n        <a href=\"javascript:void()\">\n\t\t\t<span class=\"vjs-sharePopup-Closeimage\"/>\n\t\t\t<span class=\"screen-reader-text\">cs</span>\n        </a>\n\t\t<label></label>\n        <textarea>Error occur when try to copy content</textarea>\n\t\t<button class='copylinksToClipboard'>Copy Video Url</button>\n\t\t <textarea id='txtVideoLocation'>Error occur when try to copy content</textarea>\n\t\t<button class='copylinksToClipboard'>Copy Video Location</button>\n    </div>\n</div></div>";
+            var replacekey = {
+                socialIconsHtml: socialIconsHtml
+            };
+            var custSharePanel = replaceAll(htmltemplates.sharepanelcust, replacekey);
             var rightControlsContainer = document.getElementsByClassName("azuremediaplayer")[0];
             appendHtml(rightControlsContainer, custSharePanel);
         }
@@ -43,14 +49,29 @@
                 el.appendChild(div.children[0]);
             }
 
-            $('.vjs-sharepanel-close').click(function () {
+
+            $('.vjs-sharepanel-close-image').click(function () {
                 $(this).closest('.vjs-sharepanel').addClass('vjs-hidden');
                 myPlayer.play();
+            })
+
+            $('.vjs-sharepanel-close-image').keydown(function () {
+                if (event.keyCode == 13) {
+                    $(this).closest('.vjs-sharepanel').addClass('vjs-hidden');
+                    myPlayer.play();
+                }
             })
 
             $('.vjs-sharePopup-Closeimage').click(function () {
                 $(this).closest('.vjs-sharePanel-CopyConfirmPopupContainer').addClass('vjs-hidden');
             })
+
+            $('.vjs-sharePopup-Closeimage').keydown(function () {
+                if (event.keyCode == 13) {
+                    $(this).closest('.vjs-sharePanel-CopyConfirmPopupContainer').addClass('vjs-hidden');
+                }
+            })
+
 
             $('.copylinksToClipboard').click(function () {
                 var selectorTextArea = $(this).prev('textarea');
@@ -62,18 +83,64 @@
                 $('.vjs-sharePanel-CopyConfirmPopupContainer textarea').first().val(getCurrentPageUrl(options));
                 $('.vjs-sharePanel-CopyConfirmPopupContainer textarea').last().val(getCurrentPageUrl(options) + "?l=" + myPlayer.currentTime());
                 $('.vjs-sharePanel-CopyConfirmPopupContainer ').removeClass('vjs-hidden');
+                trapFocus($('.vjs-sharePanel-CopyConfirmPopupContainer')[0]);
+            })
+        }
+        var trapFocus = function (element, lastEl) {
+
+            var focusableEls = element.querySelectorAll('a, button, textarea, input[type="text"]'),
+                firstFocusableEl = focusableEls[0];
+            firstFocusableEl.focus();
+            if (lastEl !== undefined)
+                lastFocusableEl = lastEl
+            else
+                lastFocusableEl = focusableEls[focusableEls.length - 1];
+
+            KEYCODE_TAB = 9;
+
+            element.addEventListener('keydown', function (e) {
+                var isTabPressed = (e.key === 'Tab' || e.keyCode === KEYCODE_TAB);
+
+                if (!isTabPressed) {
+                    return;
+                }
+
+                if (e.shiftKey) /* shift + tab */ {
+                    if (document.activeElement === firstFocusableEl) {
+                        lastFocusableEl.focus();
+                        e.preventDefault();
+                    }
+                } else /* tab */ {
+                    if (document.activeElement === lastFocusableEl) {
+                        firstFocusableEl.focus();
+                        e.preventDefault();
+                    }
+                }
+
             });
         }
 
         var bindClick = function () {
-            var sharePanel = myPlayer.getChild("sharePanel");
-            $('.vjs-sharepanel').removeClass('vjs-hidden');
-            myPlayer.pause();
+            if ($('.vjs-sharepanel').hasClass("vjs-hidden")) {
+                $('.vjs-sharepanel').removeClass('vjs-hidden');
+                myPlayer.pause();
+                trapFocus($('.vjs-sharepanel-controls')[0], $('#openCopyConfirmPopup')[0]);
+            }
+            else {
+                $('.vjs-sharepanel').addClass('vjs-hidden');
+                myPlayer.play();
+            }
+
             if (myPlayer.el_.clientHeight <= 0) {
                 // incase the player container height is set to 0, sharePanel will be visible.
                 // need to reset the height here.
                 myPlayer.el_.style.height = myPlayer.el().clientHeight * 0.9 + "px";
             }
+        }
+
+        var bindKeydown = function () {
+            if (event.keyCode === 13)
+                bindClick();
         }
 
         var getPredefinedShareIcon = function (shareType, options) {
@@ -122,7 +189,11 @@
         };
 
         var renderSocialIconHtml = function (rtValue) {
-            return '<div class="vjs-share-socialIcon"> <a target="_blank" href="' + rtValue.url + '"><img src="' + rtValue.iconUrl + '" class="shareicononsharepanel" data-ai="true" data-eleregion="Player" data-catagory="share icon" title="share with"></a></div>';
+            var replacekey = {
+                Url: rtValue.url,
+                IconUrl: rtValue.iconUrl
+            };
+            return replaceAll(htmltemplates.socialiconhtml, replacekey);;
         }
 
         var getCurrentPageUrl = function (options) {
@@ -154,21 +225,62 @@
             ClipBoardHelper.tryCopyTextToClipboard = function (textArea, text) {
                 textArea.value = text;
                 textArea.select();
+                var $tempmsg = '';
                 try {
                     if (document.execCommand("copy")) {
+                        var replacekey = {
+                            type: "success",
+                            msg: "<strong>Sucess!</strong> Copied to clipboard"
+                        };
+                        $tempmsg = replaceAll(htmltemplates.alertmsg, replacekey);
+                        appendAlertBoxMsg($tempmsg);
                         console.log('copied');
                     }
                     else {
+                        var replacekey = {
+                            type: "Fail",
+                            msg: "<strong>Sucess!</strong> Try again"
+                        };
+                        $tempmsg = replaceAll(htmltemplates.alertmsg, replacekey);
+                        appendAlertBoxMsg($tempmsg);
                         console.log('copy fail');
                     }
                 }
                 catch (err) {
+                    var replacekey = {
+                        type: "danger",
+                        msg: "<strong>Error!</strong> Try again"
+                    };
+                    $tempmsg = replaceAll(htmltemplates.alertmsg, replacekey);
+                    appendAlertBoxMsg($tempmsg);
                     console.log('error in copying');
                 }
 
             };
             return ClipBoardHelper;
         })();
+
+        var replaceAll = function (str, obj) {
+            for (var i in obj) {
+                if (obj.hasOwnProperty(i)) {
+                    obj["{{" + i + "}}"] = obj[i];
+                    delete obj[i];
+                }
+            }
+            var rex = new RegExp(Object.keys(obj).join("|"), "gi");
+
+            return str.replace(rex, function (matched) {
+                return obj[matched];
+            });
+        }
+
+
+        var appendAlertBoxMsg = function (msg) {
+            $(".vjs-sharepanel-controls").append(msg);
+            setTimeout(function () {
+                $("#divalert").remove();
+            }, 1500);
+        }
 
     });
 }).call(this);
